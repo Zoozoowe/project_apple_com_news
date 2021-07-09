@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><?=$this->SITE_NAME?> - <?=$this->title?></title>
+    <link rel="stylesheet" href="<?=$this->ROOT?>assets/css/bulma.min.css">
+
+    <script defer src="<?=$this->ROOT?>assets/js/fontawesome.js"></script>
+    <script src="<?=$this->ROOT?>assets/js/handlebars.js"></script>
+
+    <script src="<?=$this->ROOT?>assets/js/jquery.js"></script>
+    <script src="<?=$this->ROOT?>assets/js/main.js"></script>
+</head>
+
+<body>
+    <nav class="navbar is-fixed-top is-dark" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="/">
+                Site
+            </a>
+            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbar">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+        <div id="navbar" class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item" href="/devices">
+					Devices
+				</a>
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        Top
+                    </a>
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item" href="/news/movies">
+                            Movies
+                        </a>
+                        <a class="navbar-item" href="/news/freeapps">
+                            Apps (Free)
+                        </a>
+                        <a class="navbar-item" href="/news/paidapps">
+                            Apps (Paid)
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="navbar-end">
+                <div id="user-panel" class="navbar-item">
+                    <div class="buttons">
+                        <a class="button is-light" href="/login">
+                            Log in
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <section class="hero is-medium is-light is-bold is-fullheight">
+        <div class="hero-body">
+            <div class="container">
+                <p class="title">
+                    <?=$this->title?>
+                </p>
+                <p class="subtitle">
+                    <?=$this->subtitle?>
+                </p>
+
+                <form id="register-form">
+                    <div class="field">
+                        <p id="register-email-control" class="control has-icons-left has-icons-right">
+                            <input id="register-email" class="input is-large" type="email" placeholder="Email" minlength="1">
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-envelope"></i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="field">
+                        <p id="register-password-control" class="control has-icons-left">
+                            <input id="register-password" class="input is-large" type="password" placeholder="Password" minlength="1">
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-lock"></i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="control">
+                        <button id="register-button" class="button is-large" type="submit">Register</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><?=$this->SITE_NAME?> - <?=$this->title?></title>
+    <link rel="stylesheet" href="<?=$this->ROOT?>assets/css/bulma.min.css">
+
+    <script defer src="<?=$this->ROOT?>assets/js/fontawesome.js"></script>
+    <script src="<?=$this->ROOT?>assets/js/handlebars.js"></script>
+
+    <script src="<?=$this->ROOT?>assets/js/jquery.js"></script>
+    <script src="<?=$this->ROOT?>assets/js/main.js"></script>
+    <script src="<?=$this->ROOT?>assets/js/moment.min.js"></script>
+    <script src="<?=$this->ROOT?>assets/js/Chart.min.js"></script>
+
+    <script src="<?=$this->ROOT?>engine/template/precompiled/devices_columns.js"></script>
+</head>
+
+<body>
+    <nav class="navbar is-fixed-top is-dark" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="/">
+                Site
+            </a>
+            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbar">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+        <div id="navbar" class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item" href="/devices">
+                    Devices
+                </a>
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        Top
+                    </a>
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item" href="/news/movies">
+                            Movies
+                        </a>
+                        <a class="navbar-item" href="/news/freeapps">
+                            Apps (Free)
+                        </a>
+                        <a class="navbar-item" href="/news/paidapps">
+                            Apps (Paid)
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="navbar-end">
+                <?php if ( !isset($_SESSION["userid"]) ) { ?>
+                <div id="user-panel" class="navbar-item">
+                    <div class="buttons">
+                        <a id="user-register-button" class="button is-primary" href="/registration">
+                            <strong>Sign up</strong>
+                        </a>
+                        <a class="button is-light" href="/login">
+                            Log in
+                        </a>
+                    </div>
+                </div>
+                <?php } else { ?>
+                <div id="user-panel" class="navbar-item">
+                    <p>You loggined as <?=$this->USER->getEmail()?></p>
+                </div>
+                <?php } ?>
+            </div>
+        </div>
+    </nav>
+    <section class="hero is-medium is-light is-bold is-fullheight">
+        <div class="hero-body">
+            <div class="container">
+                <p class="title">
+                    <?=$this->title?>
+                </p>
+                <p class="subtitle">
+                    <?=$this->subtitle?>
+                </p>
+
+                <div id="devices-loading">
+                    <p>Loading devices...</p>
+                    <progress class="progress is-small is-dark"></progress>
+                </div>
+
+                <div class="columns is-multiline is-centered">
+                </div>
+            </div>
+        </div>
+    </section>
+    <?php if ( isset($_SESSION["userid"]) ) {?>
+    <section class="hero is-medium is-dark is-bold is-fullheight">
+        <div class="hero-body">
+            <div class="container">
+                <p class="title">
+                    All prices for devices
+                </p>
+                <p class="subtitle">
+                    Check in one place how price changed
+                </p>
+
+                <div class="chart-container">
+                    <canvas id="chart-price" style="display: block;"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <?php } ?>
+    <script>
+        (async function () {
+            Devices.getAll().then((_devices) => {
+                Devices.render(_devices, $(".columns"));
+
+                <? if (isset($_SESSION["userid"])) { ?>
+                    let _names = [];
+                    _devices.forEach((dev) => _names.push(dev.name));
+                    let _datasets = Devices.generateDataSets(_devices);
+
+                    var config = {
+                        type: 'line',
+                        title: {
+                            display: false
+                        },
+                        data: {
+                            datasets: _datasets
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                xAxes: [{
+                                    type: 'time',
+                                    display: true,
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Date & time'
+                                    },
+                                    ticks: {
+                                        major: {
+                                            fontStyle: 'bold',
+                                            fontColor: '#FF0000'
+                                        }
+                                    }
+                                }],
+                                yAxes: [{
+                                    display: true,
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Price'
+                                    }
+                                }]
+                            }
+                        }
+                    };
+
+                    var ctx = document.getElementById('chart-price').getContext('2d');
+                    window.myLine = new Chart(ctx, config);
+                <? } ?>
+            });
+        })();
+    </script>
+</body>
+
+</html>
